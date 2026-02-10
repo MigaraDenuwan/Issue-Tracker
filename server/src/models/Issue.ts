@@ -19,7 +19,18 @@ export enum IssueSeverity {
     CRITICAL = 'Critical'
 }
 
-const issueSchema = new Schema({
+export interface IIssue extends Document {
+    title: string;
+    description: string;
+    status: IssueStatus;
+    priority: IssuePriority;
+    severity: IssueSeverity;
+    createdBy: mongoose.Types.ObjectId;
+    createdAt: Date;
+    updatedAt: Date;
+}
+
+const issueSchema = new Schema<IIssue>({
     title: {
         type: String,
         required: true,

@@ -19,8 +19,15 @@ app.use(helmet());
 app.use(morgan(isProduction ? 'combined' : 'dev'));
 
 // CORS Configuration
+const getClientUrl = () => {
+    if (process.env.CLIENT_URL) {
+        return process.env.CLIENT_URL.replace(/\/$/, '');
+    }
+    return '';
+};
+
 const allowedOrigins = [
-    process.env.CLIENT_URL,
+    getClientUrl(),
     'http://localhost:5173',
     'http://localhost:3000'
 ].filter(Boolean) as string[];
@@ -29,9 +36,11 @@ app.use(cors({
     origin: (origin, callback) => {
         // Allow requests with no origin (like mobile apps or curl requests)
         if (!origin) return callback(null, true);
-        if (allowedOrigins.indexOf(origin) !== -1 || !isProduction) {
+
+        if (allowedOrigins.includes(origin) || !isProduction) {
             callback(null, true);
         } else {
+            console.warn(`Blocked CORS origin: ${origin}`);
             callback(new Error('Not allowed by CORS'));
         }
     },
@@ -48,7 +57,7 @@ app.get('/health', (req, res) => {
     res.status(200).json({
         status: 'ok',
         env: process.env.NODE_ENV,
-        time: new Date().toISOString()
+        timestamps: new Date().toISOString()
     });
 });
 
@@ -58,17 +67,25 @@ app.use('/api/issues', issueRoutes);
 
 // Root path message
 app.get('/', (req, res) => {
-    res.send('Issue Tracker API is running...');
+    res.json({
+        message: 'Issue Tracker API',
+        status: 'running',
+        env: process.env.NODE_ENV
+    });
 });
 
 // Database connection
 const connectDB = async () => {
     try {
         if (mongoose.connection.readyState >= 1) return;
-        await mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/issue-tracker');
-        console.log('✅ Connected to MongoDB Atlas');
+
+        const uri = process.env.MONGODB_URI || 'mongodb://localhost:27017/issue-tracker';
+
+        await mongoose.connect(uri);
+        console.log(`✅ Connected to MongoDB: ${isProduction ? 'Atlas' : 'Local'}`);
     } catch (err) {
         console.error('❌ MongoDB connection error:', err);
+        // Retry connection logic could go here, but for now strict exit in prod
         if (isProduction) process.exit(1);
     }
 };
