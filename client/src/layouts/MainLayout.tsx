@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import type { RootState } from '../store';
 import { logout } from '../store/authSlice';
 import { useLogoutMutation } from '../api/apiEndpoints';
-import { LayoutDashboard, LogOut, PlusCircle, Ticket } from 'lucide-react';
+import { LogOut, PlusCircle, Ticket } from 'lucide-react';
 import { Button } from '../components/Button';
 
 export const MainLayout: React.FC = () => {
@@ -29,43 +29,56 @@ export const MainLayout: React.FC = () => {
             {/* Navbar */}
             <nav className="sticky top-0 z-40 w-full border-b border-white/5 bg-black/50 backdrop-blur-xl">
                 <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
-                    <div className="flex items-center gap-8">
-                        <Link to="/issues" className="flex items-center gap-2 font-bold text-xl tracking-tight">
-                            <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
-                                <LayoutDashboard size={18} />
-                            </div>
-                            <span>Issue<span className="text-blue-500">Tracker</span></span>
-                        </Link>
 
-                        <div className="hidden md:flex items-center gap-1">
-                            {navItems.map((item) => (
-                                <Link
-                                    key={item.path}
-                                    to={item.path}
-                                    className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors ${location.pathname === item.path ? 'bg-white/5 text-white' : 'text-zinc-400 hover:text-white hover:bg-white/5'
-                                        }`}
-                                >
-                                    <item.icon size={16} />
-                                    {item.label}
-                                </Link>
-                            ))}
-                        </div>
+                    <div className="flex items-center gap-8">
+                    <Link to="/issues" className="flex items-center gap-2">
+                        <img
+                        src="/src/assets/logo.png"
+                        alt="Issue Tracker Logo"
+                        className="w-20 h-20 rounded-lg object-contain"
+                        />
+                    </Link>
+
+                    <div className="hidden md:flex items-center gap-1">
+                        {navItems.map((item) => (
+                        <Link
+                            key={item.path}
+                            to={item.path}
+                            className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                            location.pathname === item.path
+                                ? 'bg-white/5 text-white'
+                                : 'text-zinc-400 hover:text-white hover:bg-white/5'
+                            }`}
+                        >
+                            <item.icon size={16} />
+                            {item.label}
+                        </Link>
+                        ))}
+                    </div>
                     </div>
 
                     <div className="flex items-center gap-4">
-                        {user ? (
-                            <>
-                                <div className="text-right hidden sm:block">
-                                    <p className="text-sm font-medium">{user.email.split('@')[0]}</p>
-                                </div>
-                                <Button variant="ghost" size="icon" onClick={handleLogout} title="Logout">
-                                    <LogOut size={18} />
-                                </Button>
-                            </>
-                        ) : (
-                            <Button onClick={() => navigate('/login')}>Login</Button>
-                        )}
+                    {user ? (
+                        <>
+                        <div className="text-right hidden sm:block">
+                            <p className="text-sm font-medium">
+                            {user.email.split('@')[0]}
+                            </p>
+                        </div>
+                        <Button
+                            variant="ghost"
+                            size="icon"
+                            onClick={handleLogout}
+                            title="Logout"
+                        >
+                            <LogOut size={18} />
+                        </Button>
+                        </>
+                    ) : (
+                        <Button onClick={() => navigate('/login')}>Login</Button>
+                    )}
                     </div>
+
                 </div>
             </nav>
 
