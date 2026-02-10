@@ -18,20 +18,3 @@ services:
         generateValue: true
       - key: CLIENT_URL
         sync: false
-
-  # ---------------- FRONTEND ----------------
-  - type: static_site
-    name: issue-tracker-client
-    rootDir: client
-    buildCommand: npm install && npm run build
-    publishDir: dist
-    envVars:
-      - key: VITE_API_URL
-        fromService:
-          type: web
-          name: issue-tracker-server
-          property: url
-    routes:
-      - type: rewrite
-        source: /*
-        destination: /index.html
