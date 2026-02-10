@@ -29,6 +29,7 @@ export const LoginPage: React.FC = () => {
     return (
         <div className="min-h-screen flex items-center justify-center p-4">
             <div className="w-full max-w-md space-y-8">
+                <img src="/client/src/assets/logo2.png" alt="Logo" className="w-48 h-48 mx-auto" />
                 <div className="text-center space-y-2">
                     <h1 className="text-3xl font-bold tracking-tight">Welcome back</h1>
                     <p className="text-zinc-400">Sign in to your account to continue</p>

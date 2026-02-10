@@ -32,9 +32,8 @@ export const MainLayout: React.FC = () => {
                     <div className="flex items-center gap-8">
                         <Link to="/issues" className="flex items-center gap-2 font-bold text-xl tracking-tight">
                             <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
-                                <LayoutDashboard size={18} />
+                                <img src="/client/src/assets/logo.png" alt="Logo" className="w-24 h-24 mx-auto" />
                             </div>
-                            <span>Issue<span className="text-blue-500">Tracker</span></span>
                         </Link>
 
                         <div className="hidden md:flex items-center gap-1">
