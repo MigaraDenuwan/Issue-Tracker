@@ -1,5 +1,4 @@
 services:
-  # ---------------- BACKEND ----------------
   - type: web
     name: issue-tracker-server
     env: node
@@ -18,10 +17,7 @@ services:
       - key: JWT_REFRESH_SECRET
         generateValue: true
       - key: CLIENT_URL
-        fromService:
-          type: static_site
-          name: issue-tracker-client
-          property: url
+        sync: false
 
   # ---------------- FRONTEND ----------------
   - type: static_site
