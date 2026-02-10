@@ -7,7 +7,7 @@ export interface AuthRequest extends Request {
     };
 }
 
-export const authenticate = (req: AuthRequest, res: Response, next: NextFunction) => {
+export const authenticate = (req: Request, res: Response, next: NextFunction) => {
     const authHeader = req.headers.authorization;
     if (!authHeader?.startsWith('Bearer ')) {
         return res.status(401).json({ message: 'Unauthorized' });
@@ -17,7 +17,7 @@ export const authenticate = (req: AuthRequest, res: Response, next: NextFunction
 
     try {
         const payload = jwt.verify(token, process.env.JWT_ACCESS_SECRET || 'secret') as any;
-        req.user = { userId: payload.userId };
+        (req as AuthRequest).user = { userId: payload.userId };
         next();
     } catch (err) {
         return res.status(401).json({ message: 'Unauthorized' });

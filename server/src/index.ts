@@ -33,7 +33,7 @@ const allowedOrigins = [
 ].filter(Boolean) as string[];
 
 app.use(cors({
-    origin: (origin, callback) => {
+    origin: (origin: string | undefined, callback: (err: Error | null, allow?: boolean) => void) => {
         // Allow requests with no origin (like mobile apps or curl requests)
         if (!origin) return callback(null, true);
 
@@ -83,7 +83,7 @@ const connectDB = async () => {
 
         await mongoose.connect(uri);
         console.log(`✅ Connected to MongoDB: ${isProduction ? 'Atlas' : 'Local'}`);
-    } catch (err) {
+    } catch (err: any) {
         console.error('❌ MongoDB connection error:', err);
         // Retry connection logic could go here, but for now strict exit in prod
         if (isProduction) process.exit(1);
