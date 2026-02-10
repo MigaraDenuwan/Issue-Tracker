@@ -228,7 +228,6 @@ export const IssuesPage: React.FC = () => {
                     </table>
                 </div>
 
-                {/* Pagination */}
                 {data && data.pages > 1 && (
                     <div className="px-6 py-4 border-t border-white/5 flex items-center justify-between">
                         <p className="text-sm text-zinc-500">

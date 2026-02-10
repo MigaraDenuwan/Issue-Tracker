@@ -10,7 +10,7 @@ const getBaseUrl = () => {
 
 const baseQuery = fetchBaseQuery({
     baseUrl: `${getBaseUrl()}/api`,
-    credentials: 'include', // Important for cookie-based JWT refresh
+    credentials: 'include', 
     prepareHeaders: (headers, { getState }) => {
         const token = (getState() as RootState).auth.accessToken;
         if (token) {
@@ -28,7 +28,6 @@ const baseQueryWithReauth: BaseQueryFn<
     let result = await baseQuery(args, api, extraOptions);
 
     if (result.error && result.error.status === 401) {
-        // try to get a new token
         const refreshResult = await baseQuery(
             { url: '/auth/refresh', method: 'POST' },
             api,
@@ -38,7 +37,6 @@ const baseQueryWithReauth: BaseQueryFn<
         if (refreshResult.data) {
             const { accessToken, user } = refreshResult.data as any;
             api.dispatch(setCredentials({ accessToken, user }));
-            // retry the first query
             result = await baseQuery(args, api, extraOptions);
         } else {
             api.dispatch(logout());

@@ -39,7 +39,6 @@ function App() {
           <Route path="issues/:id/edit" element={<IssueFormPage />} />
         </Route>
 
-        {/* Fallback */}
         <Route path="*" element={<Navigate to="/issues" replace />} />
       </Routes>
     </Router>

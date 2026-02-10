@@ -14,11 +14,9 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 const isProduction = process.env.NODE_ENV === 'production';
 
-// Security & Logging
 app.use(helmet());
 app.use(morgan(isProduction ? 'combined' : 'dev'));
 
-// CORS Configuration
 const getClientUrl = () => {
     if (process.env.CLIENT_URL) {
         return process.env.CLIENT_URL.replace(/\/$/, '');
@@ -34,7 +32,6 @@ const allowedOrigins = [
 
 app.use(cors({
     origin: (origin: string | undefined, callback: (err: Error | null, allow?: boolean) => void) => {
-        // Allow requests with no origin (like mobile apps or curl requests)
         if (!origin) return callback(null, true);
 
         if (allowedOrigins.includes(origin) || !isProduction) {
@@ -52,7 +49,6 @@ app.use(cors({
 app.use(express.json());
 app.use(cookieParser());
 
-// Health Check for Render
 app.get('/health', (req, res) => {
     res.status(200).json({
         status: 'ok',
@@ -61,11 +57,9 @@ app.get('/health', (req, res) => {
     });
 });
 
-// Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/issues', issueRoutes);
 
-// Root path message
 app.get('/', (req, res) => {
     res.json({
         message: 'Issue Tracker API',
@@ -74,7 +68,6 @@ app.get('/', (req, res) => {
     });
 });
 
-// Database connection
 const connectDB = async () => {
     try {
         if (mongoose.connection.readyState >= 1) return;
@@ -82,17 +75,15 @@ const connectDB = async () => {
         const uri = process.env.MONGODB_URI || 'mongodb://localhost:27017/issue-tracker';
 
         await mongoose.connect(uri);
-        console.log(`✅ Connected to MongoDB: ${isProduction ? 'Atlas' : 'Local'}`);
+        console.log(`Connected to MongoDB: ${isProduction ? 'Atlas' : 'Local'}`);
     } catch (err: any) {
-        console.error('❌ MongoDB connection error:', err);
-        // Retry connection logic could go here, but for now strict exit in prod
+        console.error('MongoDB connection error:', err);
         if (isProduction) process.exit(1);
     }
 };
 
 connectDB();
 
-// Error handler
 app.use((err: any, req: Request, res: Response, next: NextFunction) => {
     const statusCode = err.statusCode || 500;
     console.error(`[Error] ${err.message}`);
@@ -103,9 +94,9 @@ app.use((err: any, req: Request, res: Response, next: NextFunction) => {
 });
 
 app.listen(PORT, () => {
-    console.log(`🚀 Server running on port ${PORT}`);
-    console.log(`🔧 Environment: ${process.env.NODE_ENV}`);
-    console.log(`🌐 Allowed CORS Origins:`, allowedOrigins);
+    console.log(`Server running on port ${PORT}`);
+    console.log(`Environment: ${process.env.NODE_ENV}`);
+    console.log(`Allowed CORS Origins:`, allowedOrigins);
 });
 
 export default app;

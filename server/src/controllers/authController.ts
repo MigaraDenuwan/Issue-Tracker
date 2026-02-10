@@ -46,7 +46,6 @@ export const refresh = async (req: Request, res: Response) => {
     try {
         const payload = jwt.verify(token, process.env.JWT_REFRESH_SECRET!) as JwtPayload;
 
-        // Check if payload has userId
         if (!payload.userId) return res.status(401).json({ accessToken: '' });
 
         const user = await User.findById(payload.userId);
@@ -60,7 +59,6 @@ export const refresh = async (req: Request, res: Response) => {
 };
 
 export const logout = (req: Request, res: Response) => {
-    // Clear cookie with same options as it was set
     res.clearCookie('refreshToken', {
         path: '/api/auth/refresh',
         httpOnly: true,
