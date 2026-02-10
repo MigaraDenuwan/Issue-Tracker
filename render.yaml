@@ -1,34 +1,34 @@
 services:
-  # Backend Service
+  # ---------------- BACKEND ----------------
   - type: web
     name: issue-tracker-server
     env: node
     plan: free
-    region: ohio # Default region, can be changed
+    region: ohio
     rootDir: server
-    buildCommand: npm install --include=dev && npm run build
-    startCommand: npm run dev
+    buildCommand: npm install && npm run build
+    startCommand: npm start
     envVars:
+      - key: NODE_ENV
+        value: production
       - key: MONGODB_URI
-        sync: false # Must be set in Render Dashboard
+        sync: false
       - key: JWT_ACCESS_SECRET
         generateValue: true
       - key: JWT_REFRESH_SECRET
         generateValue: true
       - key: CLIENT_URL
         fromService:
-          type: site
+          type: static
           name: issue-tracker-client
           property: url
-    autoDeploy: false
 
-  # Frontend Service
-  - type: site
+  # ---------------- FRONTEND ----------------
+  - type: static
     name: issue-tracker-client
-    plan: free
     rootDir: client
-    buildCommand: npm install --include=dev && npm run build
-    publishDir: dist
+    buildCommand: npm install && npm run build
+    staticPublishPath: dist
     envVars:
       - key: VITE_API_URL
         fromService:
