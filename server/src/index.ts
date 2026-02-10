@@ -40,7 +40,7 @@ app.use(cors({
         if (allowedOrigins.includes(origin) || !isProduction) {
             callback(null, true);
         } else {
-            console.warn(`Blocked CORS origin: ${origin}`);
+            console.warn(`Blocked CORS origin: ${origin}. Allowed: ${allowedOrigins.join(', ')}`);
             callback(new Error('Not allowed by CORS'));
         }
     },
@@ -103,7 +103,9 @@ app.use((err: any, req: Request, res: Response, next: NextFunction) => {
 });
 
 app.listen(PORT, () => {
-    console.log(`🚀 Server running on port ${PORT} in ${process.env.NODE_ENV || 'development'} mode`);
+    console.log(`🚀 Server running on port ${PORT}`);
+    console.log(`🔧 Environment: ${process.env.NODE_ENV}`);
+    console.log(`🌐 Allowed CORS Origins:`, allowedOrigins);
 });
 
 export default app;

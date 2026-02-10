@@ -3,8 +3,13 @@ import type { BaseQueryFn, FetchArgs, FetchBaseQueryError } from '@reduxjs/toolk
 import { setCredentials, logout } from '../store/authSlice';
 import type { RootState } from '../store';
 
+const getBaseUrl = () => {
+    const apiUrl = import.meta.env.VITE_API_URL;
+    return apiUrl ? apiUrl.replace(/\/$/, '') : 'http://localhost:5000';
+};
+
 const baseQuery = fetchBaseQuery({
-    baseUrl: `${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api`,
+    baseUrl: `${getBaseUrl()}/api`,
     credentials: 'include', // Important for cookie-based JWT refresh
     prepareHeaders: (headers, { getState }) => {
         const token = (getState() as RootState).auth.accessToken;
