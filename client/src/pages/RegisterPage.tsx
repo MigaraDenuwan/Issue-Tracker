@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { setCredentials } from '../store/authSlice';
 import { useRegisterMutation } from '../api/apiEndpoints';
 import { Button } from '../components/Button';
 import { Input } from '../components/Input';
@@ -10,13 +12,15 @@ export const RegisterPage: React.FC = () => {
     const [password, setPassword] = useState('');
     const [register, { isLoading }] = useRegisterMutation();
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
-            await register({ email, password }).unwrap();
-            toast.success('Registration successful. Please log in.');
-            navigate('/login');
+            const { accessToken, user } = await register({ email, password }).unwrap();
+            dispatch(setCredentials({ accessToken, user }));
+            toast.success('Account created! Welcome.');
+            navigate('/issues');
         } catch (err: any) {
             toast.error(err.data?.message || 'Registration failed');
         }

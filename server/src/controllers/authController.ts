@@ -13,8 +13,20 @@ export const register = async (req: Request, res: Response) => {
         const user = new User({ email, password });
         await user.save();
 
-        res.status(201).json({ message: 'User registered successfully' });
+        const accessToken = generateAccessToken(user._id.toString());
+        const refreshToken = generateRefreshToken(user._id.toString());
+
+        sendRefreshToken(res, refreshToken);
+
+        res.status(201).json({
+            accessToken,
+            user: {
+                id: user._id,
+                email: user.email
+            }
+        });
     } catch (error) {
+        console.error('Registration error:', error);
         res.status(500).json({ message: 'Server error' });
     }
 };
