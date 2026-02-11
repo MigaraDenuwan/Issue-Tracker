@@ -32,9 +32,11 @@ export const MainLayout: React.FC = () => {
 
                     <div className="flex items-center gap-8">
                     <Link to="/issues" className="flex items-center gap-2">
-                        <img src="/logo.png" alt="Logo"
-                        className="w-20 h-20 rounded-lg object-contain"
-                        />
+                        <img 
+                            src="/logo.png" 
+                            alt="Logo"
+                            className="w-28 h-28 object-contain"
+                            />
                     </Link>
 
                     <div className="hidden md:flex items-center gap-1">
