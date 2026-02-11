@@ -4,7 +4,7 @@
 A production-quality full-stack Issue Tracker with Auth, CRUD, Search, Filters, and Export.
 
 ## 🚀 Live Demo
-- **Frontend (Static Site)**: [https://issue-tracker-oo91.onrender.com/](https://issue-tracker-oo91.onrender.com)
+- **Frontend (Static Site)**: [https://issue-tracker-oo91.onrender.com](https://issue-tracker-oo91.onrender.com)
 - **Backend API (Web Service)**: [https://issue-tracker-server-1tox.onrender.com](https://issue-tracker-server-1tox.onrender.com)
 
 ## 🚀 Features
@@ -110,3 +110,4 @@ Verify the backend is running correctly:
 
 ## 📄 License
 MIT
+
