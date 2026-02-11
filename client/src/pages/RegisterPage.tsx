@@ -25,7 +25,7 @@ export const RegisterPage: React.FC = () => {
     return (
         <div className="min-h-screen flex items-center justify-center p-4">
             <div className="w-full max-w-md space-y-8">
-                <img src="/src/assets/logo.png" alt="Logo" className="w-auto h-100 mb-4 mx-auto" />
+                <img src="/logo.png" alt="Logo" className="w-auto h-100 mb-4 mx-auto" />
                 <div className="text-center space-y-2">
                     <h1 className="text-3xl font-bold tracking-tight">Create an account</h1>
                     <p className="text-zinc-400">Get started with IssueTracker today</p>
